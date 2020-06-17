@@ -79,7 +79,10 @@ function NavBar() {
             }}
           ></i>
           <Li>
-            <Link style={{ color: "rgb(71, 68, 68)", textDecoration: "none" }}>
+            <Link
+              to="/categories"
+              style={{ color: "rgb(71, 68, 68)", textDecoration: "none" }}
+            >
               Categories
             </Link>
             <i

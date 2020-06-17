@@ -43,23 +43,43 @@ const ResponseText = Styled.p`
 `;
 
 const InfoCard = Styled.div`
-display: flex;
+display: block;
 align-items: center;
-margin-left: 500px;
+margin-left: 405px;
 margin-top: 30px;
-border: 2px solid black;
-border-radius: 25px;
+border: none;
+background-color: rgb(237, 230, 230);
+border-radius: 5px;
 width: 450px;
-heigth: 300px;
+height: 300px;
 padding: 20px;
 `;
 
 const InfoText = Styled.p`
 font-size: 15px;
-display: flex;
-font-style: 'Roboto';
-margin: 15px;
-align-items: center;
+`;
+
+const InfoPill = Styled.div`
+  background-color: black;
+  color: rgb(237, 230, 230);
+  width: 20px;
+  heigth: 15px;
+  padding: 5px;
+  border-radius: 10px;
+  letter-spacing: 1.5px;
+  position: absolute;
+  right: 700px;
+  top: 230px;
+`;
+
+const InfoButton = Styled.button`
+  color: rgb(237, 230, 230);
+  background-color: black;
+  width: 85px;
+  heigth: 25px;
+  padding: 5px;
+  border: none;
+  border-radius: 10px;
 `;
 
 const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
@@ -69,6 +89,7 @@ class SearchTool extends React.Component {
     input: "Avengers",
     loading: true,
     search: null,
+    modal: false,
   };
 
   handleChange = (e) => {
@@ -84,6 +105,8 @@ class SearchTool extends React.Component {
     this.setState({ search: data.results[0], loading: false });
     console.log(data);
   }
+
+  showModal = () => {};
 
   render() {
     const { search } = this.state;
@@ -101,15 +124,15 @@ class SearchTool extends React.Component {
           {this.state.loading || !this.state.search ? (
             <ResponseText> loading...</ResponseText>
           ) : (
-            <InfoCard>
-              <InfoText>Title: {search.title}</InfoText>
-              <br />
-              <InfoText>Plot: {search.overview}</InfoText>
-              <br />
-              {/* <InfoText>Release Date: {search.release_date}</InfoText>
-              <br />
-              <InfoText>Popularity: {search.popularity}</InfoText> */}
-            </InfoCard>
+            !_.isEmpty(search) && (
+              <InfoCard>
+                <h1>{search.title}</h1>
+                <InfoPill>{parseInt(search.popularity)}</InfoPill>
+                <InfoText>Release date : {search.release_date}</InfoText>
+                <InfoText>Plot : {search.overview}</InfoText>
+                <InfoButton onClick={this.showModal}>More...</InfoButton>
+              </InfoCard>
+            )
           )}
         </div>
       </>
