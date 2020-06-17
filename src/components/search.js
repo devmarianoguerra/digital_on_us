@@ -46,8 +46,9 @@ const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
 
 class SearchTool extends React.Component {
   state = {
-    input: "",
-    search: [],
+    input: "Harry Potter",
+    loading: true,
+    search: null,
   };
 
   handleChange = (e) => {
@@ -55,15 +56,15 @@ class SearchTool extends React.Component {
     console.log("input: ", this.state.input);
   };
 
-  searchMovies = () => {
-    const { input } = this.state;
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`
-    )
-      .then((response) => response.json())
-      .then((json) => this.setState({ search: json }));
-    console.log("Search result: ", this.state.search);
-  };
+  // searchMovies = () => {
+  //   const { input } = this.state;
+  //   fetch(
+  //     `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((json) => this.setState({ search: json }));
+  //   console.log("Search result: ", this.state.search);
+  // };
 
   // renderMovies = () => {
   //   const { search } = this.state;
@@ -71,6 +72,16 @@ class SearchTool extends React.Component {
   //   console.log(listOfMovies);
   //   return listOfMovies;
   // };
+
+  async componentDidMount() {
+    const { input } = this.state;
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`
+    );
+    const data = await response.json();
+    this.setState({ search: data.results[0], loading: false });
+    console.log(data);
+  }
 
   render() {
     const { search } = this.state;
@@ -82,11 +93,18 @@ class SearchTool extends React.Component {
             placeholder="Type the movie title"
             onChange={this.handleChange}
           ></Input>
-          <Button onClick={this.searchMovies}>Find my movie!</Button>
+          <Button onClick={this.componentDidMount}>Find my movie!</Button>
         </Container>
         <div>
-          <ResponseText>Here should be the response</ResponseText>
-          <div>{!_.isEmpty(search) && this.renderMovies()}</div>
+          <ResponseText>
+            {this.state.loading || !this.state.search ? (
+              <div>loading...</div>
+            ) : (
+              <div>
+                <div> {this.state.search.title}</div>
+              </div>
+            )}
+          </ResponseText>
         </div>
       </>
     );
