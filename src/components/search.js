@@ -42,11 +42,31 @@ const ResponseText = Styled.p`
   font-size: 50px;
 `;
 
+const InfoCard = Styled.div`
+display: flex;
+align-items: center;
+margin-left: 500px;
+margin-top: 30px;
+border: 2px solid black;
+border-radius: 25px;
+width: 450px;
+heigth: 300px;
+padding: 20px;
+`;
+
+const InfoText = Styled.p`
+font-size: 15px;
+display: flex;
+font-style: 'Roboto';
+margin: 15px;
+align-items: center;
+`;
+
 const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
 
 class SearchTool extends React.Component {
   state = {
-    input: "Jurassic Park",
+    input: "Avengers",
     loading: true,
     search: null,
   };
@@ -78,15 +98,19 @@ class SearchTool extends React.Component {
           <Button onClick={this.componentDidMount}>Find my movie!</Button>
         </Container>
         <div>
-          <ResponseText>
-            {this.state.loading || !this.state.search ? (
-              <div>loading...</div>
-            ) : (
-              <div>
-                <div> {search.title}</div>
-              </div>
-            )}
-          </ResponseText>
+          {this.state.loading || !this.state.search ? (
+            <ResponseText> loading...</ResponseText>
+          ) : (
+            <InfoCard>
+              <InfoText>Title: {search.title}</InfoText>
+              <br />
+              <InfoText>Plot: {search.overview}</InfoText>
+              <br />
+              {/* <InfoText>Release Date: {search.release_date}</InfoText>
+              <br />
+              <InfoText>Popularity: {search.popularity}</InfoText> */}
+            </InfoCard>
+          )}
         </div>
       </>
     );
