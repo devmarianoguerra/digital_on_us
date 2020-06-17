@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Styled, { ThemeProvider } from "styled-components";
+import Styled from "styled-components";
 
 const Nav = Styled.nav`
 
@@ -49,7 +49,7 @@ function NavBar() {
               Home
             </Link>
             <i
-              class="fas fa-home"
+              className="fas fa-home"
               style={{
                 display: "block",
                 position: "absolute",
@@ -79,15 +79,17 @@ function NavBar() {
             }}
           ></i>
           <Li>
-            <a href>Dropdown menu</a>
+            <Link style={{ color: "rgb(71, 68, 68)", textDecoration: "none" }}>
+              Categories
+            </Link>
             <i
-              class="fas fa-chevron-down"
+              className="fas fa-chevron-down"
               style={{
                 display: "block",
                 position: "absolute",
                 alignItems: "center",
                 left: "225px",
-                top: "190px",
+                top: "175px",
               }}
             ></i>
           </Li>

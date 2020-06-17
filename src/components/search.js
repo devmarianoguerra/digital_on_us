@@ -35,7 +35,14 @@ const Button = Styled.button`
 
 `;
 
-const ApiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
+const ResponseText = Styled.p`
+  display: flex;
+  align-items: center;
+  margin-left: 500px;
+  font-size: 50px;
+`;
+
+const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
 
 class SearchTool extends React.Component {
   state = {
@@ -50,19 +57,20 @@ class SearchTool extends React.Component {
 
   searchMovies = () => {
     const { input } = this.state;
-    console.log(input);
     fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=30fb8ce9a48ed35af340f7e02a7a8c37`
+      `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`
     )
-      .then((response) => response.json)
+      .then((response) => response.json())
       .then((json) => this.setState({ search: json }));
+    console.log("Search result: ", this.state.search);
   };
 
-  renderMovies = () => {
-    const { search } = this.state;
-    const listOfMovies = search.map((movies) => <Card title={movies.title} />);
-    return listOfMovies;
-  };
+  // renderMovies = () => {
+  //   const { search } = this.state;
+  //   const listOfMovies = search.map((movies) => <Card title={movies.title} />);
+  //   console.log(listOfMovies);
+  //   return listOfMovies;
+  // };
 
   render() {
     const { search } = this.state;
@@ -76,7 +84,10 @@ class SearchTool extends React.Component {
           ></Input>
           <Button onClick={this.searchMovies}>Find my movie!</Button>
         </Container>
-        <div>{!_.isEmpty(search) && this.renderMovies()}</div>
+        <div>
+          <ResponseText>Here should be the response</ResponseText>
+          <div>{!_.isEmpty(search) && this.renderMovies()}</div>
+        </div>
       </>
     );
   }
