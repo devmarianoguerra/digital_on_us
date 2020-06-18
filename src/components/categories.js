@@ -10,7 +10,14 @@ margin-left: 220px;
 
 class Categories extends React.Component {
   render() {
-    return <Title>Aquí irán las categorías</Title>;
+    return (
+      <>
+        <Title>Categories: </Title>
+        <ul>
+          <li></li>
+        </ul>
+      </>
+    );
   }
 }
 

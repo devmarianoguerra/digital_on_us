@@ -2,6 +2,7 @@ import React from "react";
 import Styled from "styled-components";
 import _ from "lodash";
 import Card from "./card";
+import InfoModal from "./modal";
 
 const Container = Styled.div`
 margin-left: 500px;
@@ -51,7 +52,7 @@ border: none;
 background-color: rgb(237, 230, 230);
 border-radius: 5px;
 width: 450px;
-height: 300px;
+height: 400px;
 padding: 20px;
 `;
 
@@ -62,14 +63,14 @@ font-size: 15px;
 const InfoPill = Styled.div`
   background-color: black;
   color: rgb(237, 230, 230);
-  width: 20px;
+  width: 40px;
   heigth: 15px;
-  padding: 5px;
+  padding: 10px;
   border-radius: 10px;
   letter-spacing: 1.5px;
-  position: absolute;
-  right: 700px;
-  top: 230px;
+  display: flex
+  align-items: top;
+  justify-content: right:
 `;
 
 const InfoButton = Styled.button`
@@ -86,27 +87,51 @@ const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
 
 class SearchTool extends React.Component {
   state = {
-    input: "Avengers",
+    input: "",
     loading: true,
-    search: null,
+    search: [],
     modal: false,
   };
 
   handleChange = (e) => {
     this.setState({ input: e.target.value });
-    console.log("input: ", this.state.input);
   };
 
-  async componentDidMount() {
+  getMovies = async () => {
     const { input } = this.state;
     const url = `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`;
     const response = await fetch(url);
     const data = await response.json();
-    this.setState({ search: data.results[0], loading: false });
-    console.log(data);
-  }
+    this.setState({ search: data.results, loading: false });
+  };
 
-  showModal = () => {};
+  renderMovies = () => {
+    const { search } = this.state;
+    const results = search.map((movie) => (
+      <InfoCard key={movie.id}>
+        <h1>{movie.title}</h1>
+        <InfoPill>{parseInt(movie.popularity)}</InfoPill>
+        <InfoText>Release date : {movie.release_date}</InfoText>
+        <InfoText>Plot : {movie.overview}</InfoText>
+        <InfoModal
+          show={this.state.modal}
+          close={this.closeModal}
+          title={movie.title}
+          plot={movie.overview}
+        />
+        <InfoButton onClick={this.showModal}>More...</InfoButton>
+      </InfoCard>
+    ));
+    return results;
+  };
+
+  showModal = (id) => {
+    this.setState({ modal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modal: false });
+  };
 
   render() {
     const { search } = this.state;
@@ -118,21 +143,13 @@ class SearchTool extends React.Component {
             placeholder="Type the movie title"
             onChange={this.handleChange}
           ></Input>
-          <Button onClick={this.componentDidMount}>Find my movie!</Button>
+          <Button onClick={this.getMovies}>Find my movie!</Button>
         </Container>
         <div>
           {this.state.loading || !this.state.search ? (
             <ResponseText> loading...</ResponseText>
           ) : (
-            !_.isEmpty(search) && (
-              <InfoCard>
-                <h1>{search.title}</h1>
-                <InfoPill>{parseInt(search.popularity)}</InfoPill>
-                <InfoText>Release date : {search.release_date}</InfoText>
-                <InfoText>Plot : {search.overview}</InfoText>
-                <InfoButton onClick={this.showModal}>More...</InfoButton>
-              </InfoCard>
-            )
+            !_.isEmpty(search) && this.renderMovies()
           )}
         </div>
       </>
