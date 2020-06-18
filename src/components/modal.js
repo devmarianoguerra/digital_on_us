@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import Styled from "styled-components";
 
 class InfoModal extends React.Component {
   render() {
@@ -8,24 +7,41 @@ class InfoModal extends React.Component {
     const { show } = this.props;
     const { title } = this.props;
     const { plot } = this.props;
-    console.log("title: ", title, "plot: ", plot);
+    const { poster } = this.props;
     if (!show) {
       return null;
     } else {
       return (
         <>
-          <Modal show={show} style={{}}>
+          <Modal show={show}>
             <Modal.Header>
               <Modal.Title>{title}</Modal.Title>
-              <Modal.Body>
-                <span className="badge badge-light"></span>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button className="btn btn-warning" onClick={close}>
-                  Close
-                </Button>
-              </Modal.Footer>
+              <img src={poster} alt="" />
             </Modal.Header>
+            <Modal.Body>
+              <span
+                className="badge badge-light"
+                style={{
+                  width: "70px",
+                  height: "100px",
+                  fontSize: "15px",
+                }}
+              >
+                Plot : {plot}
+              </span>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                className="btn btn-warning"
+                style={{
+                  backgroundColor: "black",
+                  color: "rgb(237, 230, 230)",
+                }}
+                onClick={close}
+              >
+                Close
+              </Button>
+            </Modal.Footer>
           </Modal>
         </>
       );

@@ -1,7 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
 import _ from "lodash";
-import Card from "./card";
 import InfoModal from "./modal";
 
 const Container = Styled.div`
@@ -52,7 +51,7 @@ border: none;
 background-color: rgb(237, 230, 230);
 border-radius: 5px;
 width: 450px;
-height: 400px;
+height: auto;
 padding: 20px;
 `;
 
@@ -68,9 +67,7 @@ const InfoPill = Styled.div`
   padding: 10px;
   border-radius: 10px;
   letter-spacing: 1.5px;
-  display: flex
-  align-items: top;
-  justify-content: right:
+  margin: 5px;
 `;
 
 const InfoButton = Styled.button`
@@ -88,7 +85,7 @@ const apiKey = "30fb8ce9a48ed35af340f7e02a7a8c37";
 class SearchTool extends React.Component {
   state = {
     input: "",
-    loading: true,
+    loading: false,
     search: [],
     modal: false,
   };
@@ -107,10 +104,13 @@ class SearchTool extends React.Component {
 
   renderMovies = () => {
     const { search } = this.state;
+    const moviePath = "http://image.tmdb.org/t/p/w185";
     const results = search.map((movie) => (
       <InfoCard key={movie.id}>
         <h1>{movie.title}</h1>
+        <h6>Popularity : </h6>
         <InfoPill>{parseInt(movie.popularity)}</InfoPill>
+        <img src={moviePath + movie.poster_path} alt="" />
         <InfoText>Release date : {movie.release_date}</InfoText>
         <InfoText>Plot : {movie.overview}</InfoText>
         <InfoModal
@@ -118,6 +118,7 @@ class SearchTool extends React.Component {
           close={this.closeModal}
           title={movie.title}
           plot={movie.overview}
+          poster={moviePath + movie.poster_path}
         />
         <InfoButton onClick={this.showModal}>More...</InfoButton>
       </InfoCard>
